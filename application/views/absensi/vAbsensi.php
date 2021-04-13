@@ -16,7 +16,7 @@
     <div class="container-fluid mt-n10">
         <div class="card mb-4">
             <div class="card-header">
-                <button class='btn btn-primary btn-sm' type='button' data-toggle="modal" data-target="#tambahSOP"><i class="fa fa-plus mr-1"></i>Tambah Absensi</button>
+                <button class='btn btn-primary btn-sm' type='button' data-toggle="modal" data-target="#tambahSOP"><i class="fa fa-upload mr-1"></i>Upload Absensi</button>
             </div>
             <!-- <div class="form-group">
                 <div class="row">
