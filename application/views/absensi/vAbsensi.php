@@ -17,6 +17,7 @@
         <div class="card mb-4">
             <div class="card-header">
                 <button class='btn btn-primary btn-sm' type='button' data-toggle="modal" data-target="#tambahSOP"><i class="fa fa-upload mr-1"></i>Upload Absensi</button>
+                <a href="<?= site_url('absensi/download')?>" class='btn btn-outline-primary btn-sm' type='button' ><i class="fa fa-download mr-1"></i>Download Template Absensi</a>
             </div>
             <!-- <div class="form-group">
                 <div class="row">
@@ -57,58 +58,62 @@
                     <table class="table table-bordered table-hover" id="dataTableSOP" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No Nota Pengiriman</th>
-                                <th>No Pemesanan</th>
+                                <th>No</th>
+                                <th>NIS</th>
                                 <th>Nama</th>
-                                <th>Alamat</th>
-                                <th>Tgl Kirim</th>
-                                <th>Tgl Acara</th>
+                                <th>Jam Kedatangan</th>
+                                <th>Keterangan</th>
                                 <th width=11%>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>NK00000001</td>
-                                <td>2019081600000001</td>
-                                <td>Ilham</td>
-                                <td>Malang</td>
-                                <td>16 Sep 2019</td>
-                                <td>16 Sep 2019</td>
-                                <td>
-                                    <button title="Edit SOP" class="btn btn-sm btn-warning ml-1" type="button" data-toggle="modal" data-target="#editSOP"><i class="fa fa-edit"></i></button>
-                                    <a title="Print SOP" class="btn btn-sm btn-dark ml-1" type="button" href="<?php echo site_url('welcome/print_sop'); ?>"><i class="fa fa-print"></i></a>
-                                </td>
-                            </tr>
+                            <?php
+                                $no = 1;
+                                foreach ($absensis as $item) {
+                                    echo '
+                                        <tr>
+                                            <td>'.$no.'</td>
+                                            <td>'.$item->NIS_SISWA.'</td>
+                                            <td>'.$item->NAMA_SISWA.'</td>
+                                            <td>'.$item->JAMKEDATANGAN_ABSENSI.'</td>
+                                            <td>'.$item->KETERANGAN_ABSENSI.'</td>
+                                            <td>
+                                                <button title="Edit SOP" class="btn btn-sm btn-warning ml-1" type="button" data-toggle="modal" data-target="#editSOP"><i class="fa fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    ';
+                                    $no++;
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Modal Tambah SOP -->
+            <!-- Modal Tambah Absensi -->
             <div class="modal fade" id="tambahSOP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Tambah SOP</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Upload Absensi</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form method="post" action="">
+                            <form method="post" action="<?= site_url('absensi/upload')?>" enctype="multipart/form-data" >
                                 <div class="sbp-preview">
                                     <div class="sbp-preview-content">
                                         <div class="form-group">
                                             <!-- wadah preview -->
                                             <img id="denah-preview" alt="image preview" />
                                             <div class="custom-file">
-                                                <input type="file" name="denah" class="custom-file-input denah" id="source-denah" onchange="previewLogo();">
-                                                <label class="custom-file-label label-denah" for="image-source source-denah">Upload Logo</label>
+                                                <input type="file" name="FILEABSENSI" class="custom-file-input fileAbsensi" id="source-denah"">
+                                                <label class="custom-file-label label-fileAbsensi" for="image-source source-denah">File Absensi</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times mr-1"></i>Batal</button>
@@ -146,7 +151,7 @@
                                             <!-- wadah preview -->
                                             <img id="foto-preview" alt="image preview" />
                                             <div class="custom-file">
-                                                <input type="file" name="foto" class="custom-file-input foto" id="source-foto" onchange="previewFoto();">
+                                                <input type="file" name="foto" class="custom-file-input foto" id="source-foto">
                                                 <label class="custom-file-label label-foto" for="image-source source-lfotoogo">Upload Foto</label>
                                             </div>
                                         </div>
@@ -158,7 +163,7 @@
                                             <!-- wadah preview -->
                                             <img id="denah-preview" alt="image preview" />
                                             <div class="custom-file">
-                                                <input type="file" name="denah" class="custom-file-input denah" id="source-denah" onchange="previewLogo();">
+                                                <input type="file" name="denah" class="custom-file-input denah" id="source-denah">
                                                 <label class="custom-file-label label-denah" for="image-source source-denah">Upload Logo</label>
                                             </div>
                                         </div>
@@ -234,17 +239,18 @@
     });
 </script>
 <script type="text/javascript">
-    //preview sebelum tambah foto
-    function previewFoto() {
-        document.getElementById("foto-preview").style.display = "block";
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(document.getElementById("source-foto").files[0]);
-        oFReader.onload = function(oFREvent) {
-            document.getElementById("foto-preview").src = oFREvent.target.result;
-        };
-    };
-    $(".foto").on("change", function() {
+    $(".fileAbsensi").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".label-foto").addClass("selected").html(fileName);
+        $(this).siblings(".label-fileAbsensi").addClass("selected").html(fileName);
     });
+    //preview sebelum tambah foto
+    // function previewFoto() {
+    //     document.getElementById("foto-preview").style.display = "block";
+    //     var oFReader = new FileReader();
+    //     oFReader.readAsDataURL(document.getElementById("source-foto").files[0]);
+    //     oFReader.onload = function(oFREvent) {
+    //         document.getElementById("foto-preview").src = oFREvent.target.result;
+    //     };
+    // };
+    
 </script>

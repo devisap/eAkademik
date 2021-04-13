@@ -55,6 +55,8 @@ $route['translate_uri_dashes']  = FALSE;
 
 // Absensi
 $route['absensi']                 = 'AbsensiController/vAbsensi';
+$route['absensi/upload']          = 'AbsensiController/upload';
+$route['absensi/download']        = 'AbsensiController/download';
 
 
 
